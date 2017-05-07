@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Networking - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong>1.</strong> Basics</a></li><li><a href="encoding.html"><strong>2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong>3.</strong> Concurrency</a></li><li><a href="net.html" class="active"><strong>4.</strong> Networking</a></li><li><a href="app.html"><strong>5.</strong> Application development</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="net.html#networking" id="networking"><h1>Networking</h1></a>
+<table><thead><tr><td> Recipe </td><td> Crates </td><td> Categories </td></tr></thead>
+<tr><td> <a href="net.html#ex-url-parse">Parse a URL from a string to a <code>Url</code> type</a> </td><td> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-base">Create a base URL by removing path segments</a> </td><td> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-new-from-base">Create new URLs from a base URL</a> </td><td> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-origin">Extract the URL origin (scheme / host / port)</a> </td><td> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-rm-frag">Remove fragment identifiers and query pairs from a URL</a> </td><td> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-serialize">Serialize a <code>Url</code></a> </td><td> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://img.shields.io/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://img.shields.io/badge/-encoding-red.svg" alt="cat-encoding-badge" /></a></td></tr>
+<tr><td> <a href="net.html#ex-url-reqwest">Make a HTTP GET request after parsing a URL</a> </td><td> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a> </td></tr>
+</table>
+<p><a name="ex-url-parse"/></p>
+<a class="header" href="net.html#parse-a-url-from-a-string-to-a-url-type" id="parse-a-url-from-a-string-to-a-url-type"><h2>Parse a URL from a string to a <code>Url</code> type</h2></a>
+<p><a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://img.shields.io/badge/-net-red.svg" alt="cat-net-badge" /></a></p>
+<p>The <a href="https://docs.rs/url/1.*/url/struct.Url.html#method.parse"><code>parse</code></a> method from the <code>url</code> crate validates and parses a <code>&amp;str</code> into a
+<a href="https://docs.rs/url/1.*/url/struct.Url.html"><code>Url</code></a> struct. The input string may be malformed so this method returns
+<code>Result&lt;Url, ParseError&gt;</code>.</p>
+<p>Once the URL has been parsed, it can be used with all of the methods on the
+<code>Url</code> type.</p>
+<p>The URL in this code parses successfully, but swapping it out for a malformed
+URL will print a message containing an explanation of what went wrong.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate url;
+
+use url::Url;
+
+fn main() {
+    let s = &quot;https://github.com/rust-lang/rust/issues?labels=E-easy&amp;state=open&quot;;
+
+    match Url::parse(s) {
+        Ok(url) =&gt; {
+            println!(&quot;Successfully parsed the URL.&quot;);
+            println!(&quot;The path part of the URL is: {}&quot;, url.path());
+        }
+        Err(err) =&gt; {
+            println!(&quot;Failed to parse the URL: {}&quot;, err);
+        }
+    }
+}
+</code></pre></pre>
+<p><a name="ex-url-base"></a></p>
+<a class="header" href="net.html#create-a-base-url-by-removing-path-segments" id="create-a-base-url-by-removing-path-segments"><h2>Create a base URL by removing path segments</h2></a>
+<p><a href="https://docs.rs/url/"><img src="https://img.shields.io/crates/v/url.svg?label=url" alt="url-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust">extern crate url;
+
+use url::{Url, ParseError};
+
+#[macro_use]
+extern crate error_chain;
+
+error_chain! {
+    errors {
+        CannotBeABase
+    }
+    foreign_links {
+        Parse(ParseError);
+    }
+}
+
+fn main() {
+    let s = &quot;https://github.com/rust-lang/cargo?asdf&quot;;
+
+    match base_url(s) {
+        Ok(base) =&gt; {
+            assert_eq!(base.as_str(), &quot;https://github.com/&quot;);
+            println!(&quot;The base of the URL is: {}&quot;, base);
+        }
+        Err(err) =&gt; {
+            println!(&quot;Failed to extract base URL: {}&quot;, err);
+        }
+    }
+}
+
+/// Returns the base of the given URL - the part not including any path segments
+/// and query parameters.
+fn base_url(full: &amp;str) -&gt; Result&lt;Url&gt; {
+    let mut url = Url::parse(full)?;
+
+    // Clear path segments.
+    match url.path_segments_mut() {
+        Ok(mut path) =&gt; {
+            path.clear();
+        }
+        Err(_) =&gt; {
+            // Certain URLs cannot be turned into a base URL.
+            return Err(Error::from_kind(ErrorKind::CannotBeABase));
+        }
+    }
+
+    // Clear query parameters.
+    url.set_query(None);
+
+    Ok(url)
+}
+</code></pre></pre>
+<p><a name="ex-url-new-from-base"></a></p>
+<a class="header" href="net.html#create-new-urls-from-a-base-url" id="create-new-urls-from-a-base-url"><h2>Create new URLs from a base URL</h2></a>
+<p>The <a href="https://docs.rs/url/1.*/url/struct.Url.html#method.join"><code>join</code></a> method creates a new URL from a base and relative path.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate url;
+
+use url::{Url, ParseError};
+
+fn main() {
+    let path = &quot;/rust-lang/cargo&quot;;
+
+    match build_github_url(path) {
+        Ok(url) =&gt; {
+            assert_eq!(url.as_str(), &quot;https://github.com/rust-lang/cargo&quot;);
+            println!(&quot;The joined URL is: {}&quot;, url);
+        }
+        Err(err) =&gt; {
+            println!(&quot;Failed to build GitHub URL: {}&quot;, err);
+        }
+    }
+}
+
+fn build_github_url(path: &amp;str) -&gt; Result&lt;Url, ParseError&gt; {
+    // Hardcoded in our program. Caller's path will be joined to this.
+    const GITHUB: &amp;'static str = &quot;https://github.com&quot;;
+
+    let base = Url::parse(GITHUB).expect(&quot;hardcoded URL is known to be valid&quot;);
+    base.join(path)
+}
+</code></pre></pre>
+<p><a name="ex-url-origin"></a></p>
+<a class="header" href="net.html#extract-the-url-origin-scheme--host--port" id="extract-the-url-origin-scheme--host--port"><h2>Extract the URL origin (scheme / host / port)</h2></a>
+<p>The <a href="https://docs.rs/url/1.*/url/struct.Url.html"><code>Url</code></a> struct exposes various methods to extract information about the URL
+it represents.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate url;
+
+use url::{Url, Host};
+
+fn main() {
+    let s = &quot;ftp://rust-lang.org/examples&quot;;
+
+    match Url::parse(s) {
+        Ok(url) =&gt; {
+            assert_eq!(url.scheme(), &quot;ftp&quot;);
+            assert_eq!(url.host(), Some(Host::Domain(&quot;rust-lang.org&quot;)));
+            assert_eq!(url.port_or_known_default(), Some(21));
+            println!(&quot;The origin is as expected!&quot;);
+        }
+        Err(err) =&gt; {
+            println!(&quot;Failed to parse the URL: {}&quot;, err);
+        }
+    }
+}
+</code></pre></pre>
+<p>The same result can be obtained using the <a href="https://docs.rs/url/1.*/url/struct.Url.html#method.origin"><code>origin</code></a> method as well.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate url;
+
+use url::{Url, Origin, Host};
+
+fn main() {
+    let s = &quot;ftp://rust-lang.org/examples&quot;;
+
+    match Url::parse(s) {
+        Ok(url) =&gt; {
+            let expected_scheme = &quot;ftp&quot;.to_owned();
+            let expected_host = Host::Domain(&quot;rust-lang.org&quot;.to_owned());
+            let expected_port = 21;
+            let expected = Origin::Tuple(expected_scheme, expected_host, expected_port);
+
+            let origin = url.origin();
+            assert_eq!(origin, expected);
+            println!(&quot;The origin is as expected!&quot;);
+        }
+        Err(err) =&gt; {
+            println!(&quot;Failed to parse the URL: {}&quot;, err);
+        }
+    }
+}
+</code></pre></pre>
+<p><a name="ex-url-rm-frag"></a></p>
+<a class="header" href="net.html#remove-fragment-identifiers-and-query-pairs-from-a-url" id="remove-fragment-identifiers-and-query-pairs-from-a-url"><h2>Remove fragment identifiers and query pairs from a URL</h2></a>
+<p><a href="https://github.com/brson/rust-cookbook/issues/37">Write me!</a></p>
+<p><a name="ex-url-serialize"></a></p>
+<a class="header" href="net.html#serialize-a-url" id="serialize-a-url"><h2>Serialize a <code>Url</code></h2></a>
+<p><a href="https://github.com/brson/rust-cookbook/issues/38">Write me!</a></p>
+<p><a name="ex-url-reqwest"></a></p>
+<a class="header" href="net.html#make-a-http-get-request-after-parsing-a-url" id="make-a-http-get-request-after-parsing-a-url"><h2>Make a HTTP GET request after parsing a URL</h2></a>
+<p><a href="https://github.com/brson/rust-cookbook/issues/39">Write me!</a></p>
+<!-- Categories -->
+<!-- Crates -->
+<!-- Reference -->
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="concurrency.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="app.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="concurrency.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="app.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

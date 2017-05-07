@@ -1,0 +1,242 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Basics - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html" class="active"><strong>1.</strong> Basics</a></li><li><a href="encoding.html"><strong>2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong>3.</strong> Concurrency</a></li><li><a href="net.html"><strong>4.</strong> Networking</a></li><li><a href="app.html"><strong>5.</strong> Application development</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="basics.html#basics" id="basics"><h1>Basics</h1></a>
+<table><thead><tr><td> Recipe </td><td> Crates </td><td> Categories </td></tr></thead>
+<tr><td> <a href="basics.html#ex-std-read-lines">Read lines of strings from a file</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://img.shields.io/badge/std-1.17.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://img.shields.io/badge/-filesystem-red.svg" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-byteorder-le">Read and write integers in little-endian byte order</a> </td><td> <a href="https://docs.rs/byteorder/"><img src="https://img.shields.io/crates/v/byteorder.svg?label=byteorder" alt="byteorder-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://img.shields.io/badge/-encoding-red.svg" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-float">Generate random floating point numbers</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://img.shields.io/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://img.shields.io/badge/-rand-red.svg" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-custom">Generate random values of a custom type</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://img.shields.io/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://img.shields.io/badge/-rand-red.svg" alt="cat-science-badge" /></a> </td></tr>
+</table>
+<p><a name="ex-std-read-lines"></a></p>
+<a class="header" href="basics.html#read-lines-of-strings-from-a-file" id="read-lines-of-strings-from-a-file"><h2>Read lines of strings from a file</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://img.shields.io/badge/std-1.17.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://img.shields.io/badge/-filesystem-red.svg" alt="cat-filesystem-badge" /></a></p>
+<p>Writes a three-line message to a file, then reads it back a line at a
+time with the <a href="https://doc.rust-lang.org/std/io/struct.Lines.html"><code>Lines</code></a> iterator created by
+<a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.lines"><code>BufRead::lines</code></a>. <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> is a trait, and the most common way to
+get one is from a <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a>, which is constructed from some type
+that implements <a href="https://doc.rust-lang.org/std/io/trait.Write.html"><code>Write</code></a>, here a <a href="https://doc.rust-lang.org/std/fs/struct.File.html"><code>File</code></a>. The <a href="https://doc.rust-lang.org/std/fs/struct.File.html"><code>File</code></a> is opened
+for writing with <a href="https://doc.rust-lang.org/std/fs/struct.File.html#method.create"><code>File::create</code></a>, and reading with <a href="https://doc.rust-lang.org/std/fs/struct.File.html#method.open"><code>File::open</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">use std::fs::File;
+use std::io::{self, Write, BufReader, BufRead};
+
+fn run() -&gt; io::Result&lt;()&gt; {
+    let path = &quot;lines.txt&quot;;
+
+    let mut output = File::create(path)?;
+    write!(output, &quot;Rust\n💖\nFun&quot;)?;
+
+    let input = File::open(path)?;
+    let buffered = BufReader::new(input);
+
+    for line in buffered.lines() {
+        println!(&quot;{}&quot;, line?);
+    }
+
+    Ok(())
+}
+
+fn main() {
+    run().unwrap();
+}
+</code></pre></pre>
+<p><a name="ex-byteorder-le"></a></p>
+<a class="header" href="basics.html#read-and-write-integers-in-little-endian-byte-order" id="read-and-write-integers-in-little-endian-byte-order"><h2>Read and write integers in little-endian byte order</h2></a>
+<p><a href="https://docs.rs/byteorder/"><img src="https://img.shields.io/crates/v/byteorder.svg?label=byteorder" alt="byteorder-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://img.shields.io/badge/-encoding-red.svg" alt="cat-encoding-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust">extern crate byteorder;
+
+use std::io;
+
+use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
+
+#[derive(Default, PartialEq, Debug)]
+struct Payload {
+    kind: u8,
+    value: u16,
+}
+
+fn run() -&gt; io::Result&lt;()&gt; {
+    let original_payload = Payload::default();
+    let encoded_bytes = encode(&amp;original_payload)?;
+    let decoded_payload = decode(&amp;encoded_bytes)?;
+    assert_eq!(original_payload, decoded_payload);
+    Ok(())
+}
+
+fn encode(payload: &amp;Payload) -&gt; io::Result&lt;Vec&lt;u8&gt;&gt; {
+    let mut bytes = vec![];
+    bytes.write_u8(payload.kind)?;
+    bytes.write_u16::&lt;LittleEndian&gt;(payload.value)?;
+    Ok(bytes)
+}
+
+fn decode(mut bytes: &amp;[u8]) -&gt; io::Result&lt;Payload&gt; {
+    let payload = Payload {
+        kind: bytes.read_u8()?,
+        value: bytes.read_u16::&lt;LittleEndian&gt;()?,
+    };
+    Ok(payload)
+}
+
+fn main() {
+    run().unwrap();
+}
+</code></pre></pre>
+<p><a name="ex-rand-float"></a></p>
+<a class="header" href="basics.html#generate-random-floating-point-numbers" id="generate-random-floating-point-numbers"><h2>Generate random floating point numbers</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://img.shields.io/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/science"><img src="https://img.shields.io/badge/-rand-red.svg" alt="cat-science-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+use rand::Rng;
+
+fn main() {
+    let mut rng = rand::thread_rng();
+    println!(&quot;Random f64: {}&quot;, rng.gen::&lt;f64&gt;());
+}
+</code></pre></pre>
+<p><a name="ex-rand-custom"></a></p>
+<a class="header" href="basics.html#generate-random-values-of-a-custom-type" id="generate-random-values-of-a-custom-type"><h2>Generate random values of a custom type</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://img.shields.io/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/science"><img src="https://img.shields.io/badge/-rand-red.svg" alt="cat-science-badge" /></a></p>
+<p>A tuple <code>(i32, bool, f64)</code> and variable of user defined type <code>Point</code>
+are randomly generated. In order to alow random generation of <code>Point</code>
+it needs to implement the <a href="https://doc.rust-lang.org/rand/rand/trait.Rand.html"><code>rand::Rand</code></a> trait.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+use rand::{Rng, Rand};
+
+#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Rand for Point {
+    fn rand&lt;R: Rng&gt;(rng: &amp;mut R) -&gt; Point {
+        let (rand_x, rand_y) = rng.gen();
+        Point { x: rand_x, y: rand_y }
+    }
+}
+
+fn main() {
+    let mut rng = rand::thread_rng();
+    let rand_tuple = rng.gen::&lt;(i32, bool, f64)&gt;();
+    let rand_point: Point = rng.gen();
+    println!(&quot;Random tuple: {:?}&quot;, rand_tuple);
+    println!(&quot;Random Point: {:?}&quot;, rand_point);
+}
+</code></pre></pre>
+<!-- Categories -->
+<!-- Crates -->
+<!-- API links -->
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="about.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="encoding.html" class="mobile-nav-chapters next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="about.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="encoding.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>

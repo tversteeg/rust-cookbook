@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Application development - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = localStorage.getItem('theme');
+            if (theme == null) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = localStorage.getItem('sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong>1.</strong> Basics</a></li><li><a href="encoding.html"><strong>2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong>3.</strong> Concurrency</a></li><li><a href="net.html"><strong>4.</strong> Networking</a></li><li><a href="app.html" class="active"><strong>5.</strong> Application development</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="app.html#application-development" id="application-development"><h1>Application development</h1></a>
+<table><thead><tr><td> Recipe </td><td> Crates </td></tr></thead>
+<tr><td> <a href="app.html#ex-clap-basic">Parse command line arguments</a> </td><td> <a href="https://docs.rs/clap/"><img src="https://img.shields.io/crates/v/clap.svg?label=clap" alt="clap-badge" /></a> </td></tr>
+</table>
+<p><a name="ex-clap-basic"></a></p>
+<a class="header" href="app.html#parse-command-line-arguments" id="parse-command-line-arguments"><h2>Parse command line arguments</h2></a>
+<p><a href="https://docs.rs/clap/"><img src="https://img.shields.io/crates/v/clap.svg?label=clap" alt="clap-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust">extern crate clap;
+
+use clap::{Arg, App};
+
+fn main() {
+    // Define command line arguments.
+    let matches = App::new(&quot;My Test Program&quot;)
+        .version(&quot;0.1.0&quot;)
+        .author(&quot;Hackerman Jones &lt;hckrmnjones@hack.gov&gt;&quot;)
+        .about(&quot;Teaches argument parsing&quot;)
+        .arg(Arg::with_name(&quot;file&quot;)
+                 .short(&quot;f&quot;)
+                 .long(&quot;file&quot;)
+                 .takes_value(true)
+                 .help(&quot;A cool file&quot;))
+        .arg(Arg::with_name(&quot;num&quot;)
+                 .short(&quot;n&quot;)
+                 .long(&quot;number&quot;)
+                 .takes_value(true)
+                 .help(&quot;Five less than your favorite number&quot;))
+        .get_matches();
+
+    // Get value for file, or default to 'input.txt'.
+    let myfile = matches.value_of(&quot;file&quot;).unwrap_or(&quot;input.txt&quot;);
+    println!(&quot;The file passed is: {}&quot;, myfile);
+
+    // Get value for num if present, and try parsing it as i32.
+    let num_str = matches.value_of(&quot;num&quot;);
+    match num_str {
+        None =&gt; println!(&quot;No idea what your favorite number is.&quot;),
+        Some(s) =&gt; {
+            match s.parse::&lt;i32&gt;() {
+                Ok(n) =&gt; println!(&quot;Your favorite number must be {}.&quot;, n + 5),
+                Err(_) =&gt; println!(&quot;That's not a number! {}&quot;, s),
+            }
+        }
+    }
+}
+</code></pre></pre>
+<p>The <code>clap</code> crate is a simple-to-use, efficient, and full-featured library for
+parsing command line arguments and subcommands when writing console/terminal
+applications.</p>
+<p>The application can describe the structure of its command-line interface using
+<code>clap</code>'s builder style. The <a href="https://docs.rs/clap/">documentation</a> gives two other possible ways to
+instantiate an application.</p>
+<p>In the builder style, <code>with_name</code> is the unique identifier that <code>value_of</code> will
+use to retrieve the value passed. The <code>short</code> and <code>long</code> options control the
+flag the user will be expected to type; short flags look like <code>-f</code> and long
+flags look like <code>--file</code>.</p>
+<p>Usage information is generated by <code>clap</code>. The usage for the example application
+looks like this.</p>
+<pre><code>My Test Program 0.1.0
+Hackerman Jones &lt;hckrmnjones@hack.gov&gt;
+Teaches argument parsing
+
+USAGE:
+    testing [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -f, --file &lt;file&gt;     A cool file
+    -n, --number &lt;num&gt;    Five less than your favorite number
+</code></pre>
+<p>We can test the application by running a command like the following.</p>
+<pre><code>$ cargo run -- -f myfile.txt -n 251
+</code></pre>
+<p>The output is:</p>
+<pre><code>The file passed is: myfile.txt
+Your favorite number must be 256.
+</code></pre>
+<!-- Crates -->
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a href="net.html" class="mobile-nav-chapters previous">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+
+            </div>
+
+            
+                <a href="net.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+    </body>
+</html>
